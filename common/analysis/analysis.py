@@ -3,9 +3,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.metrics import *
-from theano.gradient import np
+import numpy as np
 
-from common.analysis.mr import misclassification_rate
 from common.utils.logger import *
 from common.utils.paths import *
 from common.utils.pickler import load, save
@@ -173,6 +172,7 @@ def calculate_analysis_values(predicted_clusters, true_cluster):
     :param true_clusters: The validation clusters
     :return: misclassification rate, homogeneity Score, completeness score and the thresholds.
     """
+    from common.analysis.mr import misclassification_rate
     logger = get_logger('analysis', logging.INFO)
     logger.info('Calculate scores')
 

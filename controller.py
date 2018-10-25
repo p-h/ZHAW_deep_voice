@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 The main entry point of the speaker clustering suite.
 You can use this file to setup, train and test any network provided in the suite.
@@ -25,12 +27,11 @@ import matplotlib
 
 matplotlib.use('Agg')
 from common.analysis.analysis import *
-from common.extrapolation.setup import setup_suite, is_suite_setup
 from common.network_controller import NetworkController
 from common.utils.paths import *
-from networks.flow_me.me_controller import MEController
-from networks.lu_vo.luvo_controller import LuvoController
-from networks.pairwise_kldiv.kldiv_controller import KLDivController
+# from networks.flow_me.me_controller import MEController
+# from networks.lu_vo.luvo_controller import LuvoController
+# from networks.pairwise_kldiv.kldiv_controller import KLDivController
 from networks.pairwise_lstm.lstm_controller import LSTMController
 
 
@@ -114,6 +115,7 @@ class Controller(NetworkController):
             sys.exit(1)
 
     def setup_networks(self):
+        from common.extrapolation.setup import setup_suite, is_suite_setup
         if not self.setup:
             return
 
