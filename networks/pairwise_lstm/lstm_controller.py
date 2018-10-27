@@ -15,7 +15,6 @@ from .bilstm_2layer_dropout_plus_2dense import bilstm_2layer_dropout
 from .core.data_gen import generate_test_data
 from .core.pairwise_kl_divergence import pairwise_kl_divergence
 
-
 class LSTMController(NetworkController):
     def __init__(self, out_layer, seg_size, vec_size):
         super().__init__("pairwise_lstm")
@@ -26,7 +25,8 @@ class LSTMController(NetworkController):
 
     def train_network(self):
         bilstm_2layer_dropout(self.network_file, 'speakers_100_50w_50m_not_reynolds_cluster',
-                              n_hidden1=256, n_hidden2=256, n_classes=100, segment_size=40)
+                              n_hidden1=256, n_hidden2=256,
+                              n_classes=100, segment_size=self.seg_size)
 
     def get_embeddings(self, out_layer, seg_size, vec_size):
         logger = get_logger('lstm', logging.INFO)
@@ -50,7 +50,7 @@ class LSTMController(NetworkController):
         loss = pairwise_kl_divergence
         custom_objects = {'pairwise_kl_divergence': pairwise_kl_divergence}
         optimizer = 'rmsprop'
-        vector_size = self.vec_size #256 * 2
+        vector_size = self.vec_size
 
         # Fill return values
         for checkpoint in checkpoints:

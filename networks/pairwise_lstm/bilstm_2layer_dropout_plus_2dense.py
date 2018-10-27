@@ -31,10 +31,8 @@ from common.utils.paths import *
     Work of Gerber and Glinski.
 '''
 
-
 class bilstm_2layer_dropout(object):
-    def __init__(self, name, training_data, n_hidden1=128, n_hidden2=128, n_classes=630, n_10_batches=1000,
-                 segment_size=15, frequency=128):
+    def __init__(self, name, training_data, segment_size, n_hidden1=128, n_hidden2=128, n_classes=630, n_10_batches=1000, frequency=128):
         self.network_name = name
         self.training_data = training_data
         self.test_data = 'test' + training_data[5:]
@@ -88,8 +86,6 @@ class bilstm_2layer_dropout(object):
         X_t, y_t, X_v, y_v = self.create_train_data()
         train_gen = dg.batch_generator_lstm(X_t, y_t, 100, segment_size=self.segment_size)
         val_gen = dg.batch_generator_lstm(X_v, y_v, 100, segment_size=self.segment_size)
-        # batches_t = ((X_t.shape[0] + 128 - 1) // 128)
-        # batches_v = ((X_v.shape[0] + 128 - 1) // 128)
 
         history = model.fit_generator(train_gen, steps_per_epoch=10, epochs=self.n_10_batches,
                                       verbose=2, callbacks=calls, validation_data=val_gen,
@@ -99,5 +95,3 @@ class bilstm_2layer_dropout(object):
         ps.save_loss_plot(history, self.network_name)
         print("saving model")
         model.save(get_experiment_nets(self.network_name + ".h5"))
-        # print "evaluating model"
-        # da.calculate_test_acccuracies(self.network_name, self.test_data, True, True, True, segment_size=self.segment_size)

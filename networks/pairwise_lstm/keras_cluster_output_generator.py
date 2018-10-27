@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
     This file allows you tu use a pre-existing trained network and run it on test data.
     It saves the output in a pickle so it can be evaluated further.
