@@ -16,17 +16,18 @@ from .core.data_gen import generate_test_data
 from .core.pairwise_kl_divergence import pairwise_kl_divergence
 
 class LSTMController(NetworkController):
-    def __init__(self, out_layer, seg_size, vec_size):
+    def __init__(self, out_layer, seg_size, vec_size, log_dir=None):
         super().__init__("pairwise_lstm")
         self.network_file = self.name + "_100"
         self.out_layer = out_layer
         self.seg_size = seg_size
         self.vec_size = vec_size
+        self.log_dir = log_dir
 
     def train_network(self):
         bilstm_2layer_dropout(self.network_file, 'speakers_100_50w_50m_not_reynolds_cluster',
                               n_hidden1=256, n_hidden2=256,
-                              n_classes=100, segment_size=self.seg_size)
+                              n_classes=100, segment_size=self.seg_size, log_dir=self.log_dir)
 
     def get_embeddings(self, out_layer, seg_size, vec_size):
         logger = get_logger('lstm', logging.INFO)

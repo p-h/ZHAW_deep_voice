@@ -32,7 +32,7 @@ from common.utils.paths import *
 '''
 
 class bilstm_2layer_dropout(object):
-    def __init__(self, name, training_data, segment_size, n_hidden1=128, n_hidden2=128, n_classes=630, n_10_batches=1000, frequency=128):
+    def __init__(self, name, training_data, segment_size, n_hidden1=128, n_hidden2=128, n_classes=630, n_10_batches=1000, frequency=128, log_dir=None):
         self.network_name = name
         self.training_data = training_data
         self.test_data = 'test' + training_data[5:]
@@ -77,7 +77,14 @@ class bilstm_2layer_dropout(object):
             monitor='val_loss', verbose=1, save_best_only=True)
         net_checkpoint = keras.callbacks.ModelCheckpoint(
             get_experiment_nets(self.network_name + "_{epoch:05d}.h5"), period=100)
-        return [csv_logger, net_saver, net_checkpoint]
+
+        callbacks = [csv_logger, net_saver, net_checkpoint]
+
+        if self.log_dir:
+            tensorboard_logger = keras.callbacks.TensorBoard(self.log_dir)
+            callbacks.append(tensorboard_logger)
+
+        return callbacks
 
     def run_network(self):
         model = self.create_net()

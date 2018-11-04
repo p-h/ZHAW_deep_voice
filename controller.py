@@ -37,7 +37,7 @@ from networks.pairwise_lstm.lstm_controller import LSTMController
 from settings import *
 
 class Controller(NetworkController):
-    def __init__(self, setup=True, network='pairwise_lstm', train=False, test=False, clear=False, debug=False, plot=False, best=False, val_data=None, out_layer=None, seg_size=None, vec_size=None):
+    def __init__(self, setup=True, network='pairwise_lstm', train=False, test=False, clear=False, debug=False, plot=False, best=False, val_data=None, out_layer=None, seg_size=None, vec_size=None, log_dir=None):
         super().__init__("Front")
         self.setup = setup
         self.network = network
@@ -51,6 +51,7 @@ class Controller(NetworkController):
         self.out_layer = out_layer or OUTPUT_LAYER
         self.seg_size = seg_size or SEGMENT_SIZE
         self.vec_size = vec_size or VECTOR_SIZE
+        self.log_dir = log_dir
 
         validation_data = {
             40: "speakers_40_clustering_vs_reynolds",
@@ -89,7 +90,7 @@ class Controller(NetworkController):
 
     def generate_controllers(self):
         controller_dict = {
-            'pairwise_lstm': [LSTMController(self.out_layer, self.seg_size, self.vec_size)],
+            'pairwise_lstm': [LSTMController(self.out_layer, self.seg_size, self.vec_size, self.log_dir)],
 #            'pairwise_kldiv': [KLDivController()],
 #            'flow_me': [MEController(self.clear, self.debug, False)],
 #            'luvo': [LuvoController()],
@@ -151,6 +152,7 @@ if __name__ == '__main__':
     parser.add_argument('-out_layer#', dest='out_layer', help='Output layer', type=int)
     parser.add_argument('-seg_size#', dest='seg_size', help='Segment size', type=int)
     parser.add_argument('-vec_size#', dest='vec_size', help='Vector size', type=int)
+    parser.add_argument('log_dir', dest='log_dir', help='Log directory for tensorboard')
     args = parser.parse_args()
 
     controller = Controller(args.setup, args.network, args.train, args.test, args.clear, args.debug, args.plot, args.best, args.validation_number, args.out_layer, args.seg_size, args.vec_size)
