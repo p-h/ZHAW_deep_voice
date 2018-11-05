@@ -152,8 +152,8 @@ if __name__ == '__main__':
     parser.add_argument('-out_layer#', dest='out_layer', help='Output layer', type=int)
     parser.add_argument('-seg_size#', dest='seg_size', help='Segment size', type=int)
     parser.add_argument('-vec_size#', dest='vec_size', help='Vector size', type=int)
-    parser.add_argument('log_dir', dest='log_dir', help='Log directory for tensorboard')
+    parser.add_argument('-log_dir', dest='log_dir', help='Log directory for tensorboard')
     args = parser.parse_args()
 
-    controller = Controller(args.setup, args.network, args.train, args.test, args.clear, args.debug, args.plot, args.best, args.validation_number, args.out_layer, args.seg_size, args.vec_size)
+    controller = Controller(args.setup, args.network, args.train, args.test, args.clear, args.debug, args.plot, args.best, args.validation_number, args.out_layer, args.seg_size, args.vec_size, args.log_dir)
     controller.run()

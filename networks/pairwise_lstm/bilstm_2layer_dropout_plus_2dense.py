@@ -42,6 +42,7 @@ class bilstm_2layer_dropout(object):
         self.n_10_batches = n_10_batches
         self.segment_size = segment_size
         self.input = (segment_size, frequency)
+        self.log_dir = log_dir
         print(self.network_name)
         self.run_network()
 
